@@ -121,18 +121,24 @@ var commands = [
 
         // go through all links in page
         for (var i = 0; i < links.length; ++i) {
-
+            if (links[i].href) {
+                if (links[i].id == "pnprev") {
+                    safari.self.tab.dispatchMessage("openLinkInCurrentTab", links[i].href);
+                    break;
+                }
+            }
         }
     }],
 
-    ["]]", function(event) {
+    ["]]", function(count) {
         var links = document.getElementsByTagName("a");
 
         // go through all links in page
         for (var i = 0; i < links.length; ++i) {
-            if (links.href) {
-                if (links.id == "pnnext") {
-                    safari.self.tab.dispatchMessage("openLinkInCurrentTab", url);
+            if (links[i].href) {
+                if (links[i].id == "pnnext") {
+                    safari.self.tab.dispatchMessage("openLinkInCurrentTab", links[i].href);
+                    break;
                 }
             }
         }

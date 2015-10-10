@@ -28,7 +28,6 @@
         }
     }
 
-
     function respondToMessage(theMessageEvent) {
         switch (theMessageEvent.name) {
         case "closeTab":
@@ -45,6 +44,11 @@
             break;
 
         case "openTabWithLink":
+            var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
+            safari.application.activeBrowserWindow.openTab('foreground', ++index).url = theMessageEvent.message;
+            break;
+
+        case "openLinkInCurrentTab":
             var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
             safari.application.activeBrowserWindow.openTab('foreground', ++index).url = theMessageEvent.message;
             break;
