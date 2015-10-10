@@ -18,6 +18,7 @@ EventManager.prototype.registerEvent = function EventManager_registerEvent(cmd, 
 }
 
 EventManager.prototype.matchCommand = function EventManager_matchCommand() {
+    console.log('matching');
     var matched = this.registeredEvents.find(function(evt) {
         if (evt.cmd.length == 1) {
             return evt.cmd == this.cmd_one;
@@ -28,6 +29,8 @@ EventManager.prototype.matchCommand = function EventManager_matchCommand() {
 
     if (!matched)
         return;
+
+    console.log('match found');
 
     var count = matched.cmd.length == 1 ? this.count_one : this.count_two;
     if (count == 0)
@@ -40,14 +43,17 @@ EventManager.prototype.matchCommand = function EventManager_matchCommand() {
 }
 
 EventManager.prototype.handle = function EventManager_handle(evt) {
+    console.log('handle', evt.keyCode);
     if (evt.keyCode >= 48 && evt.keyCode <= 57) {
         var digit = evt.keyCode - 48;
         this.count_one = this.count_one * 10 + digit;
     } else {
         var character = String.fromCharCode(evt.keyCode);
+        if (!evt.shiftKey)
+            character = character.toLowerCase();
         this.cmd_one = character;
         this.cmd_two = this.cmd_two[1] + character;
-        //console.log('first: ' + this.cmd_one + ', second: ' + this.cmd_two + ', count_one: ' + this.count_one + ', count_two: ' + this.count_two);
+        console.log('first: ' + this.cmd_one + ', second: ' + this.cmd_two + ', count_one: ' + this.count_one + ', count_two: ' + this.count_two);
         this.matchCommand();
         this.count_two = this.count_one;
         this.count_one = 0;
@@ -55,13 +61,20 @@ EventManager.prototype.handle = function EventManager_handle(evt) {
 }
 
 window.vimsafari = new EventManager();
+vimsafari.pressed = {};
 
-document.onkeypress = function(evt) {
+document.onkeydown = function(evt) {
     evt = evt || window.event;
     if (document.activeElement.tagName != 'INPUT' &&
         document.activeElement.tagName != 'TEXTAREA' &&
-        document.activeElement.tagName != 'SELECT') {
+        document.activeElement.tagName != 'SELECT' &&
+        vimsafari.pressed[evt.keyCode] == undefined) {
         vimsafari.handle(evt);
+        vimsafari.pressed[evt.keyCode] = setInterval(function () { vimsafari.handle(evt); }, 150);
     }
 };
 
+document.onkeyup = function(evt) {
+    clearInterval(vimsafari.pressed[evt.keyCode]);
+    vimsafari.pressed[evt.keyCode] = undefined;
+}
