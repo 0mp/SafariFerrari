@@ -8,6 +8,7 @@ function EventManager() {
 }
 
 EventManager.prototype.registerEvent = function EventManager_registerEvent(cmd, func) {
+    console.log("event registered!");
     var event_obj = {
         cmd: cmd,
         callback: func
@@ -29,6 +30,8 @@ EventManager.prototype.matchCommand = function EventManager_matchCommand() {
         return;
 
     var count = matched.cmd.length == 1 ? this.count_one : this.count_two;
+    if (count == 0)
+        count = 1;
     matched.callback(count);
     this.count_one = 0;
     this.count_two = 0;
@@ -45,10 +48,10 @@ EventManager.prototype.handle = function EventManager_handle(evt) {
         this.cmd_one = character;
         this.cmd_two = this.cmd_two[1] + character;
         //console.log('first: ' + this.cmd_one + ', second: ' + this.cmd_two + ', count_one: ' + this.count_one + ', count_two: ' + this.count_two);
+        this.matchCommand();
         this.count_two = this.count_one;
         this.count_one = 0;
     }
-    this.matchCommand();
 }
 
 window.vimsafari = new EventManager();
@@ -58,7 +61,7 @@ document.onkeypress = function(evt) {
     if (document.activeElement.tagName != 'INPUT' &&
         document.activeElement.tagName != 'TEXTAREA' &&
         document.activeElement.tagName != 'SELECT') {
-        manager.handle(evt);
+        vimsafari.handle(evt);
     }
 };
 
