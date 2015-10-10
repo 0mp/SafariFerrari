@@ -100,10 +100,10 @@ var commands = [
     ["l", function(count) { window.scrollBy(count * 100, 0); }],
 
     // page up
-    ["u", function(count) { window.scrollTo(0,0); }],
+    ["u", function(count) { smoothScroll(0,-400, 3); }],
 
     // page down
-    ["d", function(count) { window.scrollBy(0, document.body.offsetHeight); }],
+    ["d", function(count) { smoothScroll(0, 400, 3); }],
 
     // close tab
     ["x", function(count) {
