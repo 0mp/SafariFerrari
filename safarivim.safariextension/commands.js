@@ -148,6 +148,10 @@ var commands = [
     ["gg", function(count) {
       console.log(parseInt(window.scrollY / 100));
         smoothScroll(0, -window.scrollY, parseInt(window.scrollY / 130));
+    }],
+
+    ["H", function(count) {
+        window.history.back();
     }]
 ];
 
