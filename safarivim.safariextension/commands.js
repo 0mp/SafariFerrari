@@ -26,12 +26,12 @@ var commands = [
 
     // close tab
     ["x", function(count) {
-
+        safari.self.tab.dispatchMessage("closeTab");
     }],
 
     // open  tab
     ["X", function(count) {
-
+        safari.self.tab.dispatchMessage("openTab");
     }],
 
     ["f", function(count) {
