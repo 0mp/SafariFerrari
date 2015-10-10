@@ -73,7 +73,7 @@ document.onkeydown = function(evt) {
         evt.keyIdentifier != "Control" &&
         vimsafari.pressed == undefined) {
         vimsafari.handle(evt);
-        vimsafari.pressed = setInterval(function () { vimsafari.handle(evt); }, 150);
+        // vimsafari.pressed = setInterval(function () { vimsafari.handle(evt); }, 800);
     }
 };
 
