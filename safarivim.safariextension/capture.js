@@ -46,6 +46,7 @@ EventManager.prototype.matchCommand = function EventManager_matchCommand() {
 }
 
 EventManager.prototype.handle = function EventManager_handle(evt) {
+  console.log(evt);
     if (!this.enabled)
         return;
     console.log('handle ' +  evt.keyCode);
@@ -53,7 +54,7 @@ EventManager.prototype.handle = function EventManager_handle(evt) {
         var digit = evt.keyCode - 48;
         this.count_one = this.count_one * 10 + digit;
     } else {
-        var character = String.fromCharCode(evt.keyCode);
+        var character = String.fromCharCode(evt.which);
         if (!evt.shiftKey)
             character = character.toLowerCase();
         this.cmd_one = character;
