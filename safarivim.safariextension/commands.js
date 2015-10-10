@@ -1,9 +1,10 @@
 vimsafari.openedLinks = [];
 
-function smoothScroll(x, y) {
+function smoothScroll(x, y, step_scale) {
+    var step_scale = step_scale || 1;
     var delay = 20;
     var time_offset = 0;
-    var step_size = 15;
+    var step_size = 25 * step_scale;
     var ct = 0;
     var y_modifier = y < 0 ? -1 : 1;
     y = y * y_modifier;
@@ -11,6 +12,7 @@ function smoothScroll(x, y) {
         setTimeout(function() { window.scrollBy(0, y_modifier * step_size); }, delay * ct)
         ct++;
     }
+    setTimeout(function() { window.scrollBy(0, y_modifier * i); }, delay * ct);
 }
 
 function removeOpenedLinkTooltips() {
@@ -113,7 +115,6 @@ var commands = [
         safari.self.tab.dispatchMessage("reopenClosedTab");
     }],
 
-
     ["f", displayLinkTooltips],
 
     ["[[", function(count) {
@@ -142,6 +143,11 @@ var commands = [
                 }
             }
         }
+    }],
+
+    ["gg", function(count) {
+      console.log(parseInt(window.scrollY / 100));
+        smoothScroll(0, -window.scrollY, parseInt(window.scrollY / 130));
     }]
 ];
 
