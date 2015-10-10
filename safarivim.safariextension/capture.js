@@ -10,39 +10,24 @@ function EventManager() {
 
 EventManager.prototype.registerEvent = function EventManager_registerEvent(cmd, func) {
     console.log("event registered!");
-    var event_obj = {
-        cmd: cmd,
-        callback: func
-    }
-
-    this.registeredEvents.push(event_obj);
+    this.registeredEvents.push({ cmd: cmd, callback: func });
 }
 
 EventManager.prototype.registerLink = function EventManager_registerEvent(cmd, func) {
     console.log("link registered!");
-    var event_obj = {
-        cmd: cmd,
-        callback: func
-    }
-
-    this.registeredLinks.push(event_obj);
+    this.registeredLinks.push({ cmd: cmd, callback: func });
 }
 
 EventManager.prototype.matchCommand = function EventManager_matchCommand() {
     console.log('matching');
     var match;
+    var searchArr = this.registeredLinks.length > 0 ?
+                        this.registeredLinks :
+                        this.registeredEvents;
 
-    if (this.registeredLinks.length > 0) {
-        matched = this.registeredLinks.find(function(evt) {
-            return evt.cmd == this.cmd_two || evt.cmd == this.cmd_one;
-        }, this);
-        if (matched)
-            this.registeredLinks = [];
-    } else {
-        matched = this.registeredEvents.find(function(evt) {
-                return evt.cmd == this.cmd_one || evt.cmd == this.cmd_two;
-        }, this);
-    }
+    matched = searchArr.find(function(evt) {
+        return evt.cmd == this.cmd_two || evt.cmd == this.cmd_one;
+    }, this);
 
     if (!matched)
         return;
@@ -52,6 +37,7 @@ EventManager.prototype.matchCommand = function EventManager_matchCommand() {
     var count = matched.cmd.length == 1 ? this.count_one : this.count_two;
     if (count == 0)
         count = 1;
+    this.registeredLinks = [];
     matched.callback(count);
     this.count_one = 0;
     this.count_two = 0;
@@ -60,7 +46,7 @@ EventManager.prototype.matchCommand = function EventManager_matchCommand() {
 }
 
 EventManager.prototype.handle = function EventManager_handle(evt) {
-    console.log('handle', evt.keyCode);
+    console.log('handle ' +  evt.keyCode);
     if (evt.keyCode >= 48 && evt.keyCode <= 57) {
         var digit = evt.keyCode - 48;
         this.count_one = this.count_one * 10 + digit;
