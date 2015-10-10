@@ -1,6 +1,7 @@
 function EventManager() {
     this.enabled = true;
     this.registeredEvents = [];
+    this.registeredLinks = [];
     this.count_one = 0;
     this.count_two = 0;
     this.cmd_one = ' ';
@@ -17,15 +18,31 @@ EventManager.prototype.registerEvent = function EventManager_registerEvent(cmd, 
     this.registeredEvents.push(event_obj);
 }
 
+EventManager.prototype.registerLink = function EventManager_registerEvent(cmd, func) {
+    console.log("link registered!");
+    var event_obj = {
+        cmd: cmd,
+        callback: func
+    }
+
+    this.registeredLinks.push(event_obj);
+}
+
 EventManager.prototype.matchCommand = function EventManager_matchCommand() {
     console.log('matching');
-    var matched = this.registeredEvents.find(function(evt) {
-        if (evt.cmd.length == 1) {
-            return evt.cmd == this.cmd_one;
-        } else /* evt.cmd.length == 2 */ {
-            return evt.cmd == this.cmd_two;
-        }
-    }, this);
+    var match;
+
+    if (this.registeredLinks.length > 0) {
+        matched = this.registeredLinks.find(function(evt) {
+            return evt.cmd == this.cmd_two || evt.cmd == this.cmd_one;
+        }, this);
+        if (matched)
+            this.registeredLinks = [];
+    } else {
+        matched = this.registeredEvents.find(function(evt) {
+                return evt.cmd == this.cmd_one || evt.cmd == this.cmd_two;
+        }, this);
+    }
 
     if (!matched)
         return;

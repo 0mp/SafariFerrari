@@ -99,7 +99,7 @@ var commands = [
                     links[i].appendChild(tooltip);
                     openedLinks.push(tooltip.id);
 
-                    vimsafari.registerEvent(text, (function(url) {
+                    vimsafari.registerLink(text, (function(url) {
                         return function(count) {
                             safari.self.tab.dispatchMessage("openTabWithLink", url);
 
