@@ -14,6 +14,16 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>Content</key>
+	<dict>
+		<key>Scripts</key>
+		<dict>
+			<key>Start</key>
+			<array>
+				<string>capture.js</string>
+			</array>
+		</dict>
+	</dict>
 	<key>DeveloperIdentifier</key>
 	<string>0000000000</string>
 	<key>ExtensionInfoDictionaryVersion</key>
