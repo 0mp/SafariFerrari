@@ -21,6 +21,7 @@
 			<key>Start</key>
 			<array>
 				<string>capture.js</string>
+				<string>commands.js</string>
 			</array>
 		</dict>
 	</dict>
