@@ -12,9 +12,9 @@ function smoothScroll(x, y) {
 }
 
 var commands = [
-	// strzalki
-	["h", function(count) { window.scrollBy(-count * 100, 0); }],
-	["j", function(count) { smoothScroll(0, 150); }],
+    // strzalki
+    ["h", function(count) { window.scrollBy(-count * 100, 0); }],
+    ["j", function(count) { smoothScroll(0, 150); }],
     ["k", function(count) { smoothScroll(0, -150); }],
     ["l", function(count) { window.scrollBy(count * 100, 0); }],
 
