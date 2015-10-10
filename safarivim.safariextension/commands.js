@@ -14,23 +14,23 @@ function smoothScroll(x, y) {
 }
 
 function removeOpenedLinkTooltips() {
-        Element.prototype.remove = function() {
-            this.parentElement.removeChild(this);
-        }
-        NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
-            for(var i = this.length - 1; i >= 0; i--) {
-                if(this[i] && this[i].parentElement) {
-                    this[i].parentElement.removeChild(this[i]);
-                }
+    Element.prototype.remove = function() {
+        this.parentElement.removeChild(this);
+    }
+    NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+        for(var i = this.length - 1; i >= 0; i--) {
+            if(this[i] && this[i].parentElement) {
+                this[i].parentElement.removeChild(this[i]);
             }
         }
-
-        for (var i = 0; i < vimsafari.openedLinks.length; ++i) {
-            vimsafari.openedLinks[i].remove();
-        }
-
-        vimsafari.openedLinks = [];
     }
+
+    for (var i = 0; i < vimsafari.openedLinks.length; ++i) {
+        vimsafari.openedLinks[i].remove();
+    }
+
+    vimsafari.openedLinks = [];
+}
 
 function generateTooltipText(combinations) {
     var text = "";
@@ -113,7 +113,30 @@ var commands = [
         safari.self.tab.dispatchMessage("reopenClosedTab");
     }],
 
-    ["f", displayLinkTooltips]
+
+    ["f", displayLinkTooltips],
+
+    ["[[", function(count) {
+        var links = document.getElementsByTagName("a");
+
+        // go through all links in page
+        for (var i = 0; i < links.length; ++i) {
+
+        }
+    }],
+
+    ["]]", function(event) {
+        var links = document.getElementsByTagName("a");
+
+        // go through all links in page
+        for (var i = 0; i < links.length; ++i) {
+            if (links.href) {
+                if (links.id == "pnnext") {
+                    safari.self.tab.dispatchMessage("openLinkInCurrentTab", url);
+                }
+            }
+        }
+    }]
 ];
 
 commands.forEach(function(cmd) {
