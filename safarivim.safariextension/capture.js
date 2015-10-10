@@ -68,6 +68,9 @@ document.onkeydown = function(evt) {
     if (document.activeElement.tagName != 'INPUT' &&
         document.activeElement.tagName != 'TEXTAREA' &&
         document.activeElement.tagName != 'SELECT' &&
+        evt.keyIdentifier != "Meta" &&
+        evt.keyIdentifier != "Shift" &&
+        evt.keyIdentifier != "Control" &&
         vimsafari.pressed[evt.keyCode] == undefined) {
         vimsafari.handle(evt);
         vimsafari.pressed[evt.keyCode] = setInterval(function () { vimsafari.handle(evt); }, 150);
