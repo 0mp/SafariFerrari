@@ -150,15 +150,44 @@ var commands = [
         smoothScroll(0, -window.scrollY, parseInt(window.scrollY / 130));
     }],
 
-    ["H", function(count) {
-        window.history.back();
+    // go back in history of tab
+    ["H", function(count) { window.history.back(); }],
+
+    // go forward in history of tab
+    ["L", function(count) { window.history.forward(); }],
+
+    // reload page
+    ["r", function(count) { window.location.reload(); }],
+
+    // goto left tab
+    ["J", function(count) {
+        safari.self.tab.dispatchMessage("gotoLeftTab");
     }],
 
-    ["L", function(count) {
-        window.history.forward();
+    // goto right tab
+    ["K", function(count) {
+        safari.self.tab.dispatchMessage("gotoRightTab");
     }]
 ];
 
 commands.forEach(function(cmd) {
 	vimsafari.registerEvent(cmd[0], cmd[1]);
-})
+});
+
+function resetCombo() {
+    vimsafari.cmd_one = ' ';
+    vimsafari.cmd_two = '  ';
+    vimsafari.enabled = false;
+    setTimeout(function() { vimsafari.enabled = true; }, 10);
+}
+
+function getAnswer(theMessageEvent) {
+    console.log('msg');
+    switch (theMessageEvent.name) {
+    case "resetCombo":
+        resetCombo();
+        break;
+    }
+}
+
+safari.self.addEventListener("message", getAnswer, false);

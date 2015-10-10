@@ -46,6 +46,8 @@ EventManager.prototype.matchCommand = function EventManager_matchCommand() {
 }
 
 EventManager.prototype.handle = function EventManager_handle(evt) {
+    if (!this.enabled)
+        return;
     console.log('handle ' +  evt.keyCode);
     if (evt.keyCode >= 48 && evt.keyCode <= 57) {
         var digit = evt.keyCode - 48;
@@ -76,7 +78,7 @@ document.onkeydown = function(evt) {
         evt.keyIdentifier != "Control" &&
         vimsafari.pressed == undefined) {
         vimsafari.handle(evt);
-        // vimsafari.pressed = setInterval(function () { vimsafari.handle(evt); }, 800);
+        // vimsafari.pressed = setInterval(function () { vimsafari.handle(evt); }, 150);
     }
 };
 

@@ -37,20 +37,38 @@
         case "openTab":
             var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
             safari.application.activeBrowserWindow.openTab('foreground', ++index);
+            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
             break;
 
         case "reopenClosedTab":
             reopenClosedTabs();
+            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
             break;
 
         case "openTabWithLink":
             var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
             safari.application.activeBrowserWindow.openTab('foreground', ++index).url = theMessageEvent.message;
+            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo", true);
             break;
 
         case "openLinkInCurrentTab":
             var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
             safari.application.activeBrowserWindow.openTab('foreground', ++index).url = theMessageEvent.message;
+            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo", true);
+            break;
+
+        case "gotoLeftTab":
+            var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
+            index = (index == 0 ? safari.application.activeBrowserWindow.tabs.length-1 : index - 1);
+            safari.application.activeBrowserWindow.tabs[index].activate();
+            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
+            break;
+
+        case "gotoRightTab":
+            var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
+            index = (index == safari.application.activeBrowserWindow.tabs.length-1 ? 0 : index + 1);
+            safari.application.activeBrowserWindow.tabs[index].activate();
+            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
             break;
         }
     }
