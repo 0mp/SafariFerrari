@@ -1,0 +1,15 @@
+#engine {
+	width: 70%;
+	margin:10% 15% auto 15%;
+	height:50px;
+	position:absolute;
+	background-color:#EEEEEE;
+	border-color:black;
+	font-size:2em;
+	visibility:hidden;
+}
+#engine:focus {
+	background-color:#DDDDDD;
+
+}
+
