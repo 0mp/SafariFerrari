@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>global page</title>
+  <script type="text/javascript">
+    function respondToMessage(theMessageEvent) {
+      switch (theMessageEvent.name) {
+        case "closeTab":
+          safari.application.activeBrowserWindow.activeTab.close();
+        break;
+
+        case "openTab":
+          var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
+          safari.application.activeBrowserWindow.openTab('foreground', ++index);
+        break;
+      }
+    }
+
+    safari.application.addEventListener("message", respondToMessage, false);
+ </script>
+</head>
+<body> </body>
+</html>

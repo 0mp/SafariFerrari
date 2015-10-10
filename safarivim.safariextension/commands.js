@@ -1,7 +1,7 @@
 var commands = [
-	// strzalki
-	["h", function(count) { window.scrollBy(-count * 100, 0); }],
-	["j", function(count) { window.scrollBy(0, count * 100); }],
+  // strzalki
+  ["h", function(count) { window.scrollBy(-count * 100, 0); }],
+  ["j", function(count) { window.scrollBy(0, count * 100); }],
   ["k", function(count) { window.scrollBy(0, -count * 100); }],
   ["l", function(count) { window.scrollBy(count * 100, 0); }],
 
@@ -13,12 +13,12 @@ var commands = [
 
   // close tab
   ["x", function(count) {
-
+    safari.self.tab.dispatchMessage("closeTab");
   }],
 
-  // open  tab
+  // open tab
   ["X", function(count) {
-
+    safari.self.tab.dispatchMessage("openTab");
   }],
 
   ["f", function(count) {
