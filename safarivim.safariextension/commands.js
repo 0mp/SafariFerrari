@@ -152,6 +152,10 @@ var commands = [
 
     ["H", function(count) {
         window.history.back();
+    }],
+
+    ["L", function(count) {
+        window.history.forward();
     }]
 ];
 
