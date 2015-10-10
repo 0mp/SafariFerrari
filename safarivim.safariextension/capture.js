@@ -61,7 +61,7 @@ EventManager.prototype.handle = function EventManager_handle(evt) {
 }
 
 window.vimsafari = new EventManager();
-vimsafari.pressed = {};
+vimsafari.pressed = undefined;
 
 document.onkeydown = function(evt) {
     evt = evt || window.event;
@@ -71,13 +71,13 @@ document.onkeydown = function(evt) {
         evt.keyIdentifier != "Meta" &&
         evt.keyIdentifier != "Shift" &&
         evt.keyIdentifier != "Control" &&
-        vimsafari.pressed[evt.keyCode] == undefined) {
+        vimsafari.pressed == undefined) {
         vimsafari.handle(evt);
-        vimsafari.pressed[evt.keyCode] = setInterval(function () { vimsafari.handle(evt); }, 150);
+        vimsafari.pressed = setInterval(function () { vimsafari.handle(evt); }, 150);
     }
 };
 
 document.onkeyup = function(evt) {
-    clearInterval(vimsafari.pressed[evt.keyCode]);
-    vimsafari.pressed[evt.keyCode] = undefined;
+    clearInterval(vimsafari.pressed);
+    vimsafari.pressed = undefined;
 }
