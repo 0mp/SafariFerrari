@@ -32,5 +32,5 @@ Here are available commands which you can use in this extension (**use it withou
 
 ### Miscellaneous
 
-* **"q"** - hidden command
+* **"q"** - surprise command
 
