@@ -56,17 +56,48 @@
                 safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo", true);
                 break;
 
-            case "gotoLeftTab":
-                var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
-                index = (index == 0 ? safari.application.activeBrowserWindow.tabs.length-1 : index - 1);
-                safari.application.activeBrowserWindow.tabs[index].activate();
+            case "gotoRightTab":
+                var tab = safari.application.activeBrowserWindow.activeTab;
+                var tabs = safari.application.activeBrowserWindow.tabs;
+                var i = tabs.indexOf(tab) + 1;
+                if (!tabs[i]) {
+                    i = 0;
+                }
+                tabs[i].activate();
                 safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
                 break;
 
-            case "gotoRightTab":
-                var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
-                index = (index == safari.application.activeBrowserWindow.tabs.length-1 ? 0 : index + 1);
-                safari.application.activeBrowserWindow.tabs[index].activate();
+            case "gotoLeftTab":
+                var tab = safari.application.activeBrowserWindow.activeTab;
+                var tabs = safari.application.activeBrowserWindow.tabs;
+                var i = tabs.indexOf(tab) - 1;
+                if (!tabs[i]) {
+                    i = tabs.length - 1;
+                }
+                tabs[i].activate();
+                safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
+                break;
+
+            case "moveTabToRight":
+                var tabs = safari.application.activeBrowserWindow.tabs;
+                var tab = safari.application.activeBrowserWindow.activeTab;
+                var i = tabs.indexOf(tab) + 2;
+                if (!tabs[i - 1]) {
+                    i = 0;
+                }
+                safari.application.activeBrowserWindow.insertTab(tab, i);
+                safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
+                break;
+
+            case "moveTabToLeft":
+                var tabs = safari.application.activeBrowserWindow.tabs;
+                var tab = safari.application.activeBrowserWindow.activeTab;
+                var i = tabs.indexOf(tab) - 1;
+                if (!tabs[i]) {
+                    i = tabs.length;
+                }
+
+                safari.application.activeBrowserWindow.insertTab(tab, i);
                 safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
                 break;
             }

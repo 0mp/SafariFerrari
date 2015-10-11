@@ -142,7 +142,6 @@ var commands = [
         }
     }],
 
-
     // goto top of the page
     ["gg", function(count) {
         smoothScroll(0, -window.scrollY, parseInt(window.scrollY / 130));
@@ -170,6 +169,15 @@ var commands = [
     // goto right tab
     ["K", function(count) {
         safari.self.tab.dispatchMessage("gotoRightTab");
+    }],
+
+    // move tab to left
+    ["¼¼", function(count) {
+        safari.self.tab.dispatchMessage("moveTabToLeft");
+    }],
+
+    ["¾¾", function(count) {
+        safari.self.tab.dispatchMessage("moveTabToRight");
     }],
 
     // temporary - awesome function
@@ -202,7 +210,7 @@ function resetCombo() {
     vimsafari.cmd_one = ' ';
     vimsafari.cmd_two = '  ';
     vimsafari.enabled = false;
-    setTimeout(function() { vimsafari.enabled = true; }, 10);
+    setTimeout(function() { vimsafari.enabled = true; }, 100);
 }
 
 function getAnswer(theMessageEvent) {
