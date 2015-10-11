@@ -51,7 +51,7 @@ function displayLinkTooltips(count) {
             var offsetY = links[i].getBoundingClientRect().top + window.scrollY;
 
             var tooltip = document.createElement("div");
-            tooltip.setAttribute('style', '\
+            tooltip.style.cssText = '\
               text-indent: 0; border: none;display: block;font: normal;letter-spacing: normal;line-height: normal;margin: 0;padding: 0;text-transform: normal;visibility: visible;width: auto;word-spacing: normal; z-index: auto;\
               clear: none; float: none;\
               background: yellow;\
@@ -151,8 +151,7 @@ var commands = [
 
     // goto bottom of the page
     ["G", function(count) {
-        console.log(screen.height);
-        smoothScroll(0, screen.height, parseInt(window.scrollY / 130));
+        smoothScroll(0, document.body.offsetHeight, parseInt(document.body.offsetHeight / 200));
     }],
 
     // go back in history of tab
@@ -175,9 +174,8 @@ var commands = [
     }],
 
     // temporary - awesome function
-    ["q", function(count) {
+    ["q", function() {
         var doge_count = 40;
-
         for(var i = 0; i < doge_count; i++) {
             var top = parseInt(Math.random() * window.innerHeight);
             var left = parseInt(Math.random() * window.innerWidth);
@@ -209,6 +207,7 @@ function resetCombo() {
 }
 
 function getAnswer(theMessageEvent) {
+    console.log('msg');
     switch (theMessageEvent.name) {
     case "resetCombo":
         resetCombo();
