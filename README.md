@@ -21,7 +21,7 @@ Here are available commands which you can use in this extension (**use it withou
 
 * **"x"** - close tab
 * **"X"** - reopen closed tab (you can use it more than just once)
-* **"f"** - shows links tooltips (you can open them by typing their "textID")
+* **"f"** - show links tooltips (after that you can open them in next tab by typing their "ID")
 * **"r"** - reload tab
 * **"J"** - go to the left tab
 * **"K"** - go to the right tab
