@@ -1,80 +1,79 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>global page</title>
-  <script type="text/javascript">
+    <title>global page</title>
+    <script type="text/javascript">
+        var closedTabURLs = [];
+        var tabOpenStyle = safari.extension.settings.tabOpenStyle;
+        var maxClosedTabs = safari.extension.settings.maxClosedTabs;
 
-    var closedTabURLs = [];
-    var tabOpenStyle = safari.extension.settings.tabOpenStyle;
-    var maxClosedTabs = safari.extension.settings.maxClosedTabs;
+        safari.application.addEventListener("close", function (e) {
+            toSaveURL = e.target.url;
+            if (e.target instanceof SafariBrowserTab && !(closedTabURLs.indexOf(toSaveURL) > -1) && toSaveURL !== "" && toSaveURL !== undefined)
+                closedTabURLs.push(toSaveURL);
 
-    safari.application.addEventListener("close", function (e) {
-        toSaveURL = e.target.url;
-        if (e.target instanceof SafariBrowserTab && !(closedTabURLs.indexOf(toSaveURL) > -1) && toSaveURL !== "" && toSaveURL !== undefined)
-            closedTabURLs.push(toSaveURL);
+            if (maxClosedTabs != -1) {
+                if (closedTabURLs.length > maxClosedTabs)
+                    closedTabURLs.shift();
+            }
+        }, true);
 
-        if (maxClosedTabs != -1) {
-            if (closedTabURLs.length > maxClosedTabs)
-                closedTabURLs.shift();
+        function reopenClosedTabs() {
+            var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
+            if (closedTabURLs.length > 0) {
+                var reopenURL = closedTabURLs.pop();
+                var newTab = safari.application.activeBrowserWindow.openTab(tabOpenStyle, index + 1);
+                newTab.url = reopenURL;
+            }
         }
-    }, true);
 
-    function reopenClosedTabs() {
-        var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
-        if (closedTabURLs.length > 0) {
-            var reopenURL = closedTabURLs.pop();
-            var newTab = safari.application.activeBrowserWindow.openTab(tabOpenStyle, index + 1);
-            newTab.url = reopenURL;
+        function respondToMessage(theMessageEvent) {
+            switch (theMessageEvent.name) {
+            case "closeTab":
+                safari.application.activeBrowserWindow.activeTab.close();
+                break;
+
+            case "openTab":
+                var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
+                safari.application.activeBrowserWindow.openTab('foreground', ++index);
+                safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
+                break;
+
+            case "reopenClosedTab":
+                reopenClosedTabs();
+                safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
+                break;
+
+            case "openTabWithLink":
+                var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
+                safari.application.activeBrowserWindow.openTab('foreground', ++index).url = theMessageEvent.message;
+                safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo", true);
+                break;
+
+            case "openLinkInCurrentTab":
+                var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
+                safari.application.activeBrowserWindow.openTab('foreground', ++index).url = theMessageEvent.message;
+                safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo", true);
+                break;
+
+            case "gotoLeftTab":
+                var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
+                index = (index == 0 ? safari.application.activeBrowserWindow.tabs.length-1 : index - 1);
+                safari.application.activeBrowserWindow.tabs[index].activate();
+                safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
+                break;
+
+            case "gotoRightTab":
+                var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
+                index = (index == safari.application.activeBrowserWindow.tabs.length-1 ? 0 : index + 1);
+                safari.application.activeBrowserWindow.tabs[index].activate();
+                safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
+                break;
+            }
         }
-    }
 
-    function respondToMessage(theMessageEvent) {
-        switch (theMessageEvent.name) {
-        case "closeTab":
-            safari.application.activeBrowserWindow.activeTab.close();
-            break;
-
-        case "openTab":
-            var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
-            safari.application.activeBrowserWindow.openTab('foreground', ++index);
-            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
-            break;
-
-        case "reopenClosedTab":
-            reopenClosedTabs();
-            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
-            break;
-
-        case "openTabWithLink":
-            var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
-            safari.application.activeBrowserWindow.openTab('foreground', ++index).url = theMessageEvent.message;
-            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo", true);
-            break;
-
-        case "openLinkInCurrentTab":
-            var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
-            safari.application.activeBrowserWindow.openTab('foreground', ++index).url = theMessageEvent.message;
-            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo", true);
-            break;
-
-        case "gotoLeftTab":
-            var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
-            index = (index == 0 ? safari.application.activeBrowserWindow.tabs.length-1 : index - 1);
-            safari.application.activeBrowserWindow.tabs[index].activate();
-            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
-            break;
-
-        case "gotoRightTab":
-            var index = safari.application.activeBrowserWindow.tabs.indexOf(safari.application.activeBrowserWindow.activeTab);
-            index = (index == safari.application.activeBrowserWindow.tabs.length-1 ? 0 : index + 1);
-            safari.application.activeBrowserWindow.tabs[index].activate();
-            safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("resetCombo");
-            break;
-        }
-    }
-
-    safari.application.addEventListener("message", respondToMessage, false);
-</script>
+        safari.application.addEventListener("message", respondToMessage, false);
+    </script>
 </head>
 <body> </body>
 </html>
