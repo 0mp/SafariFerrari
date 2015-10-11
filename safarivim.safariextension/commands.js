@@ -51,15 +51,14 @@ function displayLinkTooltips(count) {
             var offsetY = links[i].getBoundingClientRect().top + window.scrollY;
 
             var tooltip = document.createElement("div");
-            tooltip.style.cssText = '\
-              text-indent: 0; border: none;display: block;font: normal;letter-spacing: normal;line-height: normal;margin: 0;padding: 0;text-transform: normal;visibility: visible;width: auto;word-spacing: normal; z-index: auto;\
+            tooltip.setAttribute('style', 'text-indent: 0; border: none;display: block;font: normal;letter-spacing: normal;line-height: normal;margin: 0;padding: 0;text-transform: normal;visibility: visible;width: auto;word-spacing: normal; z-index: auto;\
               clear: none; float: none;\
               background: yellow;\
-              width: 25px; height: 15px;\
+              width: 25px; height: 17.5px;\
               position: absolute; top: ' + offsetY + 'px; left: ' + offsetX + 'px; bottom: auto;\
               border: 1px solid black; border-radius: 2px;\
-              color: black; font-size: 11px !important; text-align: center; vertical-align: middle !important; font-weight: bold;\
-            ';
+              color: black; font-size: 12px !important; text-align: center; vertical-align: middle !important; font-weight: bold;\
+            ');
 
             var text = generateTooltipText(combinations);
             combinations[text] = true;
